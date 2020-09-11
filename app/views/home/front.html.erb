@@ -30,7 +30,7 @@
       <tr>
         <td><%= user.id %></td>
         <td><%= link_to 'Show', profiles_path %></td>
-        <td>/</td>
+        
         <% if signed_in? && !Invitation.reacted?(current_user.id, user.id) && current_user != user %>
           <td> <%= link_to 'Send Invitation',
             invitations_create_path(ids: {id1: current_user.id, id2: user.id})
