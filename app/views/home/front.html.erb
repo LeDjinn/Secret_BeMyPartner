@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>BBmpartner</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+  <h1>Ma page d'accueil</h1>
+   
+  <h2>Connexion </h2>
+     <% if current_user %>
+         <%= link_to 'Sign out', destroy_user_session_path, method: :delete %>
+     <% else %>
+         <%= link_to 'Sign up' ,  new_user_registration_path %>
+         <%= link_to 'Sign in', new_user_session_path %>
+    <% end %>
+  <h2>Liens Utiles </h2>
+  <%= link_to 'Projets', projects_path %>
+  <%= link_to 'Profil', profiles_path %>
+  <%= link_to 'Articles', posts_path %>
+    <%= yield %>
+
+    <p>Test pour matching</p>
+     <% User.all.each do |user| %>
+      <tr>
+        <td><%= user.id %></td>
+        <td><%= link_to 'Show', profiles_path %></td>
+        <td>/</td>
+        <% if signed_in? && !Invitation.reacted?(current_user.id, user.id) && current_user != user %>
+          <td> <%= link_to 'Send Invitation',
+            invitations_create_path(ids: {id1: current_user.id, id2: user.id})
+          %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </body>
+</html>
